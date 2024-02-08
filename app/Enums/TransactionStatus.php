@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Enums;
+
+enum TransactionStatus: int
+{
+    case PENDING = 0;
+    case SUCCESSFUL = 1;
+    case SCHEDULED = 2;
+    case NO_FUNDS = 4;
+    case UNAUTHORIZED = 5;
+
+    case ERROR = 6;
+}

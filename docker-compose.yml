@@ -1,0 +1,44 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: '3.1'
+services:
+    mysql:
+        container_name: api_mysql
+        image: 'mysql:8.0'
+        working_dir: /application
+        volumes:
+            - '.:/application'
+        environment:
+            - MYSQL_ROOT_PASSWORD=secret
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+        ports:
+            - '61002:3306'
+
+    webserver:
+        container_name: api_nginx
+        image: 'nginx:alpine'
+        working_dir: /application
+        volumes:
+            - '.:/application'
+            - './phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
+        ports:
+            - '61000:80'
+
+    php-fpm:
+        container_name: api_php_fpm
+        build: phpdocker/php-fpm
+        working_dir: /application
+        depends_on:
+            - mysql
+        volumes:
+            - '.:/application'
+            - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.3/fpm/conf.d/99-overrides.ini'
+        #entrypoint: sh -c " php /var/www/html/artisan migrate"
+    redis:
+        image: redis:7.0.15
+        container_name: api_redis
+        ports:
+            - "6382:6379"

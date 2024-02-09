@@ -33,10 +33,21 @@ services:
         working_dir: /application
         depends_on:
             - mysql
+            - redis
         volumes:
             - '.:/application'
             - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.3/fpm/conf.d/99-overrides.ini'
-        #entrypoint: sh -c " php /var/www/html/artisan migrate"
+    php-cli:
+        container_name: api_php_cli
+        build: phpdocker/php-cli
+        working_dir: /application
+        depends_on:
+            - mysql
+            - redis
+            - php-fpm
+        volumes:
+            - '.:/application'
+            - './phpdocker/php-cli/supervisor.conf:/etc/supervisor/conf.d/my-supervisor.conf'
     redis:
         image: redis:7.0.15
         container_name: api_redis

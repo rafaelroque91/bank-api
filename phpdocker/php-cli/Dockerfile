@@ -5,7 +5,6 @@ RUN apt-get update \
     && apt-get -y --no-install-recommends install \
         php8.3-mysql \
     && apt-get -y install cron \
-    && apt-get -y install supervisor \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
@@ -23,21 +22,3 @@ RUN touch /var/log/cron.log
 
 # Run the command on container startup
 CMD cron && tail -f /var/log/cron.log
-
-COPY supervisor.conf /etc/supervisor/laravel-supervisor.conf
-
-#COPY /application/composer.json /application/composer.lock ./
-#COPY /application/composer.json ./
-#RUN composer install --no-scripts --no-autoloader
-
-
-
-
-
-
-
-#COPY entrypoint.sh /usr/local/bin/
-
-#RUN chmod +x /usr/local/bin/entrypoint.sh
-
-#ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

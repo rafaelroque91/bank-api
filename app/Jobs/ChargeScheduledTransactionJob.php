@@ -10,6 +10,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ChargeScheduledTransactionJob implements ShouldQueue
 {
@@ -24,7 +26,11 @@ class ChargeScheduledTransactionJob implements ShouldQueue
 
     public function handle(TransactionService $transactionService)
     {
-        $transactionDto = TransactionDto::createFromModel($this->transaction);
-        $transactionService->chargeTransaction($transactionDto, $this->transaction);
+        try {
+            $transactionDto = TransactionDto::createFromModel($this->transaction);
+            $transactionService->chargeTransaction($transactionDto, $this->transaction);
+        } catch (\Throwable $e) {
+            Log::warning('error to charge transaction', ['message' => $e]);
+        }
     }
 }

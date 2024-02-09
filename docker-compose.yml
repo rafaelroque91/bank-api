@@ -42,12 +42,9 @@ services:
         build: phpdocker/php-cli
         working_dir: /application
         depends_on:
-            - mysql
-            - redis
             - php-fpm
         volumes:
             - '.:/application'
-            - './phpdocker/php-cli/supervisor.conf:/etc/supervisor/conf.d/my-supervisor.conf'
     redis:
         image: redis:7.0.15
         container_name: api_redis

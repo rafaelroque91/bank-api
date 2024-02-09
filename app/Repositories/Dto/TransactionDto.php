@@ -39,7 +39,7 @@ class TransactionDto extends AbstractDto
         $dto->id = $transaction->id;
         $dto->sender = $transaction->sender;
         $dto->receiver = $transaction->receiver;
-        $dto->amount = self::formatCurrencyToDB($transaction->amount);
+        $dto->amount = $transaction->amount;
         $dto->scheduledTo = Carbon::make($transaction->scheduled_to);
         $dto->chargedTo = Carbon::make($transaction->charged_to);
         $dto->status = $transaction->status;

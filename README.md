@@ -26,5 +26,8 @@
  - executar docker-compose up --build
  - aguardar a execução dos scripts do container do PHP
 
+### Para alimentar o banco de dados com dados fictícios:
+- php artisan: db:seed
+
 
 

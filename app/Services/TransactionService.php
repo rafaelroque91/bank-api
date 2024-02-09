@@ -12,6 +12,7 @@ use App\Repositories\Dto\ExternalAuthResponseDto;
 use App\Repositories\Dto\TransactionDto;
 use App\Repositories\TransactionRepository;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\LazyCollection;
 use Throwable;
 
@@ -57,6 +58,7 @@ class TransactionService
             throw $e;
         } catch (Throwable $e) {
             DB::rollBack();
+            Log::error('error to charge transaction', ['message' => $e]);
             $this->transactionRepository->setTransactionStatusError($transaction, $e->getMessage());
             throw $e;
         }

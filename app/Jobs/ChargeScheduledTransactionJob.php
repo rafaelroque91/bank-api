@@ -30,7 +30,7 @@ class ChargeScheduledTransactionJob implements ShouldQueue
             $transactionDto = TransactionDto::createFromModel($this->transaction);
             $transactionService->chargeTransaction($transactionDto, $this->transaction);
         } catch (\Throwable $e) {
-            Log::warning('error to charge transaction', ['message' => $e]);
+            Log::warning('error on ChargeScheduledTransactionJob', ['message' => $e]);
         }
     }
 }

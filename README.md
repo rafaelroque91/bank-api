@@ -93,9 +93,9 @@ php artisan account:create {name}
 
 ### Para alimentar o banco de dados com dados fictícios:
 - executar no container:
- ```
+```
 php artisan db:seed
-- ```
+```
 
 ### Para rodar a fila
 - executar no container:

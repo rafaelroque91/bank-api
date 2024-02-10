@@ -27,7 +27,6 @@
  - Clonar o projeto
  - fazer uma cópia do arquivo .env-exemple com o nome .env
  - preencher as variáveis de ambiente no arquivo .env
-   - EXTERNAL_AUTH_URL  = url do autenticador externo
    - EXTERNAL_AUTH_KEY  = key de autenticação.
  - executar docker-compose up --build
  - aguardar a execução dos scripts do container do PHP

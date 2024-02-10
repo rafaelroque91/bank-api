@@ -8,7 +8,7 @@
 - Nginx
 - MySQL
 
-### Estrutura de Containers
+## Estrutura de Containers
 - api_php_fpm: Container responsável pela API e responder comandos PHP
 - api_php_cli: Container responsável por executar os commands e rotinas agendadas
 - api_nginx: Container responsável pelo servidor Web NGINX
@@ -74,9 +74,6 @@ http://localhost:61000/api/transaction
     "scheduled_to": "2024-03-10"
 }
 ````
-
-
-
 
 ## Comandos
 

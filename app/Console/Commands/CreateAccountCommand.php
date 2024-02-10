@@ -14,8 +14,12 @@ class CreateAccountCommand extends Command
 
     public function handle(AccountService $accountService) : int
     {
-        $newAccount = $accountService->createAccount($this->argument('name'));
+        try {
+            $accountService->createAccount($this->argument('name'));
+            return Command::SUCCESS;
 
-        return Command::SUCCESS;
+        } catch (\Throwable $e) {
+            return Command::FAILURE;
+        }
     }
 }

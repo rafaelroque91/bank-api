@@ -16,7 +16,7 @@ class NewTransactionRequest extends FormRequest
         return [
             'sender'   => ['required' , 'int', 'exists:accounts,id'],
             'receiver' => ['required' , 'int', 'exists:accounts,id'],
-            'amount'   => ['required' , 'numeric', 'gt:0'],
+            'amount'   => ['required' , 'int', 'gt:0'],
             'scheduled_to' => ['sometimes', 'date', 'date_format:Y-m-d','after:today','before:"2050-12-31"']
         ];
     }

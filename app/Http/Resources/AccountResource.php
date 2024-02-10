@@ -12,7 +12,7 @@ class AccountResource extends AbstractResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'balance' => $this->formatCurrencyToUser($this->balance),
+            'balance' => $this->balance,
         ];
     }
 }

@@ -9,7 +9,6 @@ use Carbon\Carbon;
 
 class TransactionDto extends AbstractDto
 {
-
     private ?int $id = null;
     private ?Account $sender = null;
     private ?Account $receiver = null;
@@ -26,7 +25,7 @@ class TransactionDto extends AbstractDto
         $dto = new self();
         $dto->sender = $accountRepo->getById($array['sender']?? null);
         $dto->receiver = $accountRepo->getById($array['receiver'] ?? null);
-        $dto->amount = self::formatCurrencyToDB($array['amount'] ?? 0);
+        $dto->amount = ($array['amount'] ?? 0);
         $dto->scheduledTo = Carbon::make($array['scheduled_to'] ?? null);
         $dto->error = ($array['error'] ?? '');
 
@@ -65,11 +64,6 @@ class TransactionDto extends AbstractDto
     public function getScheduledTo() : ?Carbon
     {
         return $this->scheduledTo;
-    }
-
-    public function getAuthorized() : ?bool
-    {
-        return $this->authorized;
     }
 
     public function getError() : ?string

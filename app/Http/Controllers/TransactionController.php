@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\NoFundsException;
 use App\Http\Requests\NewTransactionRequest;
-use App\Http\Resources\AccountResource;
 use App\Http\Resources\TransactionResource;
-use App\Services\AccountService;
 use App\Services\TransactionService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller

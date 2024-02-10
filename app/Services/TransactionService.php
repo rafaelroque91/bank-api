@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Enums\TransactionStatus;
 use App\Exceptions\NoFundsException;
+use App\Exceptions\TransactionException;
 use App\Exceptions\UnauthorizedException;
 use App\ExternalAuthClient;
 use App\Jobs\ChargeScheduledTransactionJob;
@@ -25,50 +27,67 @@ class TransactionService
     ) {
     }
 
-    /**
-     * @throws NoFundsException
-     */
-    public function chargeTransaction(TransactionDto $dto, Transaction $transaction): void
+    public function externalAuthorizationTransaction(TransactionDto $dto) : ExternalAuthResponseDto
+    {
+        return $this->externalAuthClient->authorizeTransaction($dto);
+    }
+
+    public function validateTransaction(TransactionDto $dto, Transaction $transaction) :void
     {
         try {
-            DB::beginTransaction();
             if (!$this->accountRepository->checkAvailiableFounds($dto->getSender(), $dto->getAmount())) {
-                throw new NoFundsException('There are no funds');
+                throw new TransactionException(TransactionStatus::NO_FUNDS, 'There are no funds');
             }
 
-            /** @var ExternalAuthResponseDto $res*/
-            $resAuth = $this->externalAuthClient->authorizeTransaction($dto);
+            $resAuth = $this->externalAuthorizationTransaction($dto);
 
             if (!$resAuth->getSuccess() || !$resAuth->getAuthorized()) {
-                throw new UnauthorizedException('Unauthorized Transaction');
+                throw new TransactionException(TransactionStatus::UNAUTHORIZED, 'Unauthorized Transaction');
             }
-
-            $this->accountRepository->decreaseFounds($dto->getSender(), $dto->getAmount());
-            $this->accountRepository->addFounds($dto->getReceiver(), $dto->getAmount());
-            $this->transactionRepository->setTransactionStatusSuccess($transaction);
-
-            DB::commit();
-        } catch (NoFundsException $e) {
-            $this->transactionRepository->setTransactionStatusNoFunds($transaction, $e->getMessage());
-            DB::commit();
-            throw $e;
-        } catch (UnauthorizedException $e) {
-            $this->transactionRepository->setTransactionStatusUnauthorized($transaction, $e->getMessage());
-            DB::commit();
+        } catch (TransactionException $e) {
+            $this->transactionRepository->setTransactionStatus($transaction, $e->getStatus(), $e->getMessage());
             throw $e;
         } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error('error to charge transaction', ['message' => $e]);
+            Log::error('error to validate transaction', ['message' => $e]);
             $this->transactionRepository->setTransactionStatusError($transaction, $e->getMessage());
             throw $e;
         }
     }
 
+    /**
+     * @throws Throwable
+     * @throws TransactionException
+     * @throws NoFundsException
+     */
+    public function chargeTransaction(TransactionDto $dto, Transaction $transaction): void
+    {
+        $this->validateTransaction($dto, $transaction);
+
+        try {
+            DB::beginTransaction();
+            $this->accountRepository->decreaseFounds($dto->getSender(), $dto->getAmount());
+            $this->accountRepository->addFounds($dto->getReceiver(), $dto->getAmount());
+            $this->transactionRepository->setTransactionStatusSuccess($transaction);
+            DB::commit();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error('error to charge transaction', ['message' => $e]);
+            var_dump($e->getMessage());
+            $this->transactionRepository->setTransactionStatusError($transaction, $e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * @throws Throwable
+     * @throws TransactionException
+     * @throws NoFundsException
+     */
     private function newTransaction(TransactionDto $dto) : Transaction
     {
         $newTransaction = $this->transactionRepository->create($dto);
 
-        if (!$newTransaction->isScheduled()) {
+        if (! $newTransaction->isScheduled()) {
             $this->chargeTransaction($dto, $newTransaction);
         }
 
@@ -85,7 +104,7 @@ class TransactionService
         return $this->newTransaction($transactionDto);
     }
 
-    public function sendScheduledTransactionsToQueue()
+    public function sendScheduledTransactionsToQueue(): void
     {
        foreach($this->transactionRepository->getScheduledTransactionsToSend() as $transaction){
            ChargeScheduledTransactionJob::dispatch($transaction);

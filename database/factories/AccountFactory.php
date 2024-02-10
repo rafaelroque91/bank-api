@@ -9,7 +9,7 @@ class AccountFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->text(25),
+            'name' => $this->faker->name,
             'balance' => $this->faker->numberBetween(1,99999),
         ];
     }

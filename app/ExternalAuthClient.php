@@ -19,7 +19,7 @@ class ExternalAuthClient
         return [
             'sender' => $transaction->getSender()->id,
             'receiver' => $transaction->getReceiver()->id,
-            'amount' => TransactionDto::formatCurrencyToUser($transaction->getAmount()),
+            'amount' => TransactionDto::formatToCurrency($transaction->getAmount()),
         ];
     }
 

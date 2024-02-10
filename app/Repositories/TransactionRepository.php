@@ -30,13 +30,13 @@ class TransactionRepository
     {
         $transaction->status = TransactionStatus::SUCCESSFUL;
         $transaction->charged_at = Carbon::now();
-
         $transaction->save();
     }
 
-    public function setTransactionStatusNoFunds(Transaction $transaction, string $error) : void
+
+    public function setTransactionStatus(Transaction $transaction, TransactionStatus $status, string $error) : void
     {
-        $transaction->status = TransactionStatus::NO_FUNDS;
+        $transaction->status = $status;
         $transaction->error = $error;
         $transaction->save();
     }
@@ -48,15 +48,9 @@ class TransactionRepository
         $transaction->save();
     }
 
-    public function setTransactionStatusUnauthorized(Transaction $transaction, string $error) : void
-    {
-        $transaction->status = TransactionStatus::UNAUTHORIZED;
-        $transaction->error = $error;
-        $transaction->save();
-    }
-
     public function getScheduledTransactionsToSend() : LazyCollection
     {
-        return Transaction::where('status',TransactionStatus::SCHEDULED)->where('scheduled_to',Carbon::now()->toDateString())->cursor();
+        return Transaction::where('status',TransactionStatus::SCHEDULED)
+            ->where('scheduled_to',Carbon::now()->toDateString())->cursor();
     }
 }

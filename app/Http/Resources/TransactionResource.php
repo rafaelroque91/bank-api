@@ -12,7 +12,7 @@ class TransactionResource extends AbstractResource
             'id' => $this->id,
             'sender_id' => $this->sender->id,
             'receiver_id' => $this->receiver->id,
-            'amount' => $this->formatCurrencyToUser($this->amount),
+            'amount' => $this->amount,
             'status' => $this->status,
             'scheduled_to' => $this->formatDateToUser($this->scheduled_to),
             'charged_at' => $this->formatDateToUser($this->charged_at),

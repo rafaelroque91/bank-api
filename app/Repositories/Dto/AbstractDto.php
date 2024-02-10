@@ -16,12 +16,7 @@ abstract class AbstractDto implements Arrayable
         return $this->all();
     }
 
-    public static function formatCurrencyToDB($number) : int
-    {
-        return $number * 100;
-    }
-
-    public static function formatCurrencyToUser($number) : float
+    public static function formatToCurrency($number) : float
     {
         return number_format($number / 100,2);
     }

@@ -7,7 +7,7 @@ use App\Models\Account;
 use App\Repositories\Contracts\RepositoryContract;
 use App\Repositories\Dto\AbstractDto;
 
-class AccountRepository implements RepositoryContract
+class AccountRepository
 {
     /**
      * @var AbstractDto $dto

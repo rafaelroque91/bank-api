@@ -9,7 +9,6 @@ use App\ExternalAuthClient;
 use App\Models\Account;
 use App\Models\Transaction;
 use App\Repositories\AccountRepository;
-use App\Repositories\Dto\ExternalAuthResponseDto;
 use App\Repositories\Dto\TransactionDto;
 use App\Repositories\TransactionRepository;
 use App\Services\TransactionService;
@@ -27,18 +26,6 @@ class TransactionServiceTest extends TestCase
         $this->transactionRepository =   new TransactionRepository();
         $this->externalAuthClient =  \Mockery::mock(ExternalAuthClient::class);
     }
-
-    /*
-    public function testChargeTransactionDataProvider(): array
-    {
-        return [
-            [
-                "success" => "true",
-                "authorized" => "false"
-            ]
-        ];
-    }
-    */
 
     public function dataProviderTestChargeTransaction()
     {

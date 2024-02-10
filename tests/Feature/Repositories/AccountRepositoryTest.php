@@ -1,10 +1,9 @@
 <?php
 
-namespace Tests\Feature\Services;
+namespace Tests\Feature\Repositories;
 
 use App\Models\Account;
 use App\Repositories\AccountRepository;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class AccountRepositoryTest extends TestCase

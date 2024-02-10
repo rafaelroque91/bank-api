@@ -9,7 +9,7 @@
 - MySQL
 
 ## Estrutura de Containers
-- api_php_fpm: Container responsável pela API e responder comandos PHP
+- api_php_fpm: Container responsável pela API
 - api_php_cli: Container responsável por executar os commands e rotinas agendadas
 - api_nginx: Container responsável pelo servidor Web NGINX
 - api_mysql: Container responsável pelo banco de dados

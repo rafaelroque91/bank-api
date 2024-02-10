@@ -65,6 +65,8 @@ http://localhost:61000/api/transaction
     "amount" : 100
 }
 ````
+### :warning: Amount deve ser sempre enviado em centavos. Então se a transferência for de R$ 125,50 - o valor enviado no campo amount deve ser 12560.
+
 
 #### e para agendar uma transação:
 

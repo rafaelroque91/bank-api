@@ -17,7 +17,6 @@ class ChargeScheduledTransactionJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-
     public function __construct(
 
         private readonly Transaction $transaction)

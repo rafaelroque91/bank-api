@@ -24,7 +24,7 @@ class AccountController extends Controller
 
             return AccountResource::make($newAccount);
         } catch (\Throwable $e) {
-            return response()->json(['error' => $e->getMessage()], 422);
+            return response()->json(['error to create account' => $e->getMessage()], 422);
         }
     }
 }

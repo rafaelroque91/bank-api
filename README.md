@@ -81,16 +81,15 @@ http://localhost:61000/api/transaction
 
 ## Comandos
 
+#### Entrar no container:
+```
+docker exec -it api_php_cli /bin/sh
+```
+
 ### Criar nova conta
 ```
 php artisan account:create {name}
 ```
-
-#### Entrar no container:
-```
-- docker exec -it api_php_cli /bin/sh
-```
-
 
 ### Para alimentar o banco de dados com dados fictícios:
 - executar no container:
@@ -98,7 +97,7 @@ php artisan account:create {name}
 php artisan db:seed
 ```
 
-### Para rodar a fila
+### Para processar a fila
 - executar no container:
 ```
 php artisan queue:work
@@ -109,6 +108,6 @@ php artisan queue:work
 ### Para executar os testes automatizados
 - executar no container:
 ```
-php artisan tests
+php artisan test
 ```
 

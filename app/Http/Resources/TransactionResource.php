@@ -17,7 +17,6 @@ class TransactionResource extends AbstractResource
             'scheduled_to' => $this->formatDateToUser($this->scheduled_to),
             'charged_at' => $this->formatDateToUser($this->charged_at),
             'error' => $this->error,
-
         ];
     }
 }
